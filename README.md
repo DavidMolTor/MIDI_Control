@@ -19,3 +19,7 @@ The layout is quite simple, it only takes a few hours to assemble and the total 
  - Layer selection for additional functions. The code has 4 layers but it can be easily scaled.
  
  - Configurable expression pedal routing to a different channel and CC for each layer.
+ 
+ ## Requirements
+
+ - This Arduino [MIDI library](https://github.com/FortySevenEffects/arduino_midi_library). Can be installed via the IDE library manager.
