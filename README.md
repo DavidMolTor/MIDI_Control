@@ -8,7 +8,7 @@ This project contains the brains that powers a 6 footswitch control pedal that i
 
 This projects aims to deliver a simple and scalable Arduino-based MIDI controller. The current implementation contains 6 footswitches configured in 4 different control layers that can be selected by any defined inputs.
 
-The layout is quite simple, it only takes a few hours to assemble and the total cost should be around 50€ using hifh quality components.
+The layout is quite simple, it only takes a few hours to assemble and the total cost should be around 50€ using high quality components.
 
 <p align="center"><img src="/Layout.png" alt="SCHEMATIC LAYOUT"></p>
 
