@@ -34,12 +34,13 @@ class ButtonValues
 class Button
 {
   public:
-    Button(byte pin, ButtonValues *values_press, ButtonValues *values_release, ButtonValues *values_hold);
+    Button(byte pin, ButtonValues *values_press, ButtonValues *values_release, ButtonValues *values_holdpress, ButtonValues *values_holdrelease);
     bool getMessage(byte message[]);
     void setLayer(byte layer);
     ButtonValues *Values_Press;
     ButtonValues *Values_Release;
-    ButtonValues *Values_Hold;
+    ButtonValues *Values_HoldPress;
+    ButtonValues *Values_HoldRelease;
 
   private:
     byte Pin;

@@ -91,16 +91,17 @@ void ButtonValues::resetValues()
 /*
 Public constructor for the buttons
 */
-Button::Button(byte pin, ButtonValues *values_press, ButtonValues *values_release, ButtonValues *values_hold)
+Button::Button(byte pin, ButtonValues *values_press, ButtonValues *values_release, ButtonValues *values_holdpress, ButtonValues *values_holdrelease)
 {
   //Set the button pin and mode
   Pin = pin;
   pinMode(Pin, INPUT_PULLUP);
 
   //Set the initial button values
-  Values_Press    = values_press;
-  Values_Release  = values_release;
-  Values_Hold     = values_hold;
+  Values_Press        = values_press;
+  Values_Release      = values_release;
+  Values_HoldPress    = values_holdpress;
+  Values_HoldRelease  = values_holdrelease;
 
   //Set the default control values
   Status      = 0b00000010;
@@ -115,7 +116,17 @@ Returns the button message
 bool Button::getMessage(byte message[])
 {
   //Check the current status
-  if (bitRead(Status, 1) == true)
+  if (bitRead(Status, 3) == true)
+  {
+    //Cleat the hold release status
+    bitClear(Status, 3);
+
+    //Set the message data
+    Values_HoldRelease->getMessage(Layer, message);
+
+    return true;
+  }
+  else if (bitRead(Status, 1) == true)
   {    
     bitSet(Status, 0);
     bitClear(Status, 1);
@@ -137,14 +148,17 @@ bool Button::getMessage(byte message[])
     bitClear(Status, 0);
     bitSet(Status, 1);
 
-    //Check the hold status
+    //Check the hold press status
     if (bitRead(Status, 2) == true && millis() - TimeHold > HOLD_TIME)
     {
-      //Cleat the hold status
+      //Cleat the hold press status
       bitClear(Status, 2);
 
+      //Set the hold release status
+      bitSet(Status, 3);
+
       //Set the message data
-      Values_Hold->getMessage(Layer, message);
+      Values_HoldPress->getMessage(Layer, message);
 
       return true;
     }
@@ -161,7 +175,7 @@ bool Button::getMessage(byte message[])
     Previous = ((~Previous) & 0b00000001);
 
     //Check the hold flag
-    if (Values_Hold->getValue(Layer) != NO_VALUE)
+    if (Values_HoldPress->getValue(Layer) != NO_VALUE)
     {
       //Check the hold status
       if (Previous == 0 && bitRead(Status, 2) == false)
@@ -209,7 +223,8 @@ void Button::setLayer(byte layer)
   //Reset all values
   Values_Press->resetValues();
   Values_Release->resetValues();
-  Values_Hold->resetValues();
+  Values_HoldPress->resetValues();
+  Values_HoldRelease->resetValues();
 }
 
 /*
