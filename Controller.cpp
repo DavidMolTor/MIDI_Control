@@ -38,11 +38,20 @@ void ButtonValues::getMessage(byte layer, byte message[])
     //Set the preset value
     byte *preset = Channels[layer] == 1 ? &HX_PRESET : &DL_PRESET;
 
-    //Set the next value
-    *preset += Values_Step[layer];
-    if (*preset > Values_Max[layer])
+    //Check if there is a step
+    if (Values_Step[layer] == 0 && Values_Min[layer] != 0)
     {
+      //Set the selected value
       *preset = Values_Min[layer];
+    }
+    else if (Values_Min[layer] != 0 || Values_Max[layer] != 0)
+    {
+      //Increment the preset
+      *preset += Values_Step[layer];
+      if (*preset > Values_Max[layer])
+      {
+        *preset = Values_Min[layer];
+      }
     }
 
     //Set the message value
@@ -124,7 +133,7 @@ bool Button::getMessage(byte message[])
     //Set the message data
     Values_HoldRelease->getMessage(Layer, message);
 
-    return true;
+    return message[2] != NO_VALUE;
   }
   else if (bitRead(Status, 1) == true)
   {    
@@ -154,8 +163,12 @@ bool Button::getMessage(byte message[])
       //Cleat the hold press status
       bitClear(Status, 2);
 
-      //Set the hold release status
-      bitSet(Status, 3);
+      //Check the hold release flag
+      if (Values_HoldRelease->getValue(Layer) != NO_VALUE)
+      {
+        //Set the hold release status
+        bitSet(Status, 3);
+      }
 
       //Set the message data
       Values_HoldPress->getMessage(Layer, message);
@@ -174,7 +187,7 @@ bool Button::getMessage(byte message[])
     //Store the previous status
     Previous = ((~Previous) & 0b00000001);
 
-    //Check the hold flag
+    //Check the hold press flag
     if (Values_HoldPress->getValue(Layer) != NO_VALUE)
     {
       //Check the hold status
