@@ -38,29 +38,41 @@ void ButtonValues::getMessage(byte layer, byte message[])
     //Set the preset value
     byte *preset = Channels[layer] == 1 ? &HX_PRESET : &DL_PRESET;
 
-    //Check if there is a step
-    if (Values_Step[layer] == 0 && Values_Min[layer] != 0)
+    if (Values_Min[layer] != NO_VALUE)
     {
-      //Set the selected value
-      *preset = Values_Min[layer];
-    }
-    else if (Values_Min[layer] != 0 || Values_Max[layer] != 0)
-    {
-      //Increment the preset
-      *preset += Values_Step[layer];
-      if (*preset > Values_Max[layer])
+      //Check if there is a step
+      if (Values_Step[layer] == 0)
       {
+        //Set the selected value
         *preset = Values_Min[layer];
+      }
+      else
+      {
+        //Check the step value
+        if (Values_Step[layer] > NEG_VALUE)
+        {
+          *preset -= Values_Step[layer] != NO_VALUE ? Values_Step[layer] - NEG_VALUE : 0;
+        }
+        else
+        {
+          *preset += Values_Step[layer] != NO_VALUE ? Values_Step[layer] : 0;
+        }
+
+        //Check the preset limit
+        if (*preset > Values_Max[layer])
+        {
+          *preset = Values_Min[layer];
+        }
       }
     }
 
     //Set the message value
-    message [2] = *preset;
+    message[2] = *preset;
   }
   else
   {
     //Set the message value
-    message [2] = Values[layer];
+    message[2] = Values[layer];
     
     //Set the next value
     Next = Values[layer] + Values_Step[layer];

@@ -7,11 +7,12 @@
 
 #define BIT_CONVERT   3
 #define DEBOUNCE_TIME 10
-#define HOLD_TIME     500
+#define HOLD_TIME     400
 
 #define PROG_VALUE    128
 #define LAYER_VALUE   200
 #define NO_VALUE      255
+#define NEG_VALUE     127
 
 class ButtonValues
 {

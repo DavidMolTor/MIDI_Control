@@ -8,11 +8,13 @@
 
 MIDI_CREATE_DEFAULT_INSTANCE();
 
-#define DIODE_RED1      8
-#define DIODE_RED2      11
+#define DIODE_RED1      6
+#define DIODE_RED2      5
 #define DIODE_GREEN1    9
 #define DIODE_GREEN2    10
-#define DIODE_PWM_DUTY  10
+
+#define RED_PWM_DUTY    4
+#define GREEN_PWM_DUTY  1
 
 #define NUMBER_EXPS     1
 #define NUMBER_BUTTONS  6
@@ -23,26 +25,26 @@ MIDI_CREATE_DEFAULT_INSTANCE();
 byte CURRENT_LAYER = 0;
 
 //Diode definitions
-byte DIODE_RED1_VALUES[]    { 0, 1, 0, 1 };
-byte DIODE_RED2_VALUES[]    { 0, 0, 0, 0 };
-byte DIODE_GREEN1_VALUES[]  { 0, 0, 0, 0 };
-byte DIODE_GREEN2_VALUES[]  { 0, 0, 1, 1 };
+byte DIODE_RED1_VALUES[]    { 1, 0, 0, 0 };
+byte DIODE_RED2_VALUES[]    { 1, 0, 0, 0 };
+byte DIODE_GREEN1_VALUES[]  { 0, 1, 0, 0 };
+byte DIODE_GREEN2_VALUES[]  { 0, 1, 0, 0 };
 
 //Expression pedal definition
-byte EXPRESSION1_CHANNELS[] { 1, 1, 2, 1 };
-byte EXPRESSION1_COMMANDS[] { 1, 2, 3, 1 };
+byte EXPRESSION1_CHANNELS[] { 1, 1, 1, 1 };
+byte EXPRESSION1_COMMANDS[] { 1, 1, 1, 1 };
 Expression EXPRESSION1(A0, EXPRESSION1_CHANNELS, EXPRESSION1_COMMANDS);
 
 //Common array of expression pedals
 Expression *EXPRESSIONS[] { &EXPRESSION1 };
 
 //Button setup calls
-Button BUTTON1(6, &BUTTON1_PRESS, &BUTTON1_RELEASE, &BUTTON1_HOLDPRESS, &BUTTON1_HOLDRELEASE);
-Button BUTTON2(4, &BUTTON2_PRESS, &BUTTON2_RELEASE, &BUTTON2_HOLDPRESS, &BUTTON2_HOLDRELEASE);
-Button BUTTON3(2, &BUTTON3_PRESS, &BUTTON3_RELEASE, &BUTTON3_HOLDPRESS, &BUTTON3_HOLDRELEASE);
-Button BUTTON4(7, &BUTTON4_PRESS, &BUTTON4_RELEASE, &BUTTON4_HOLDPRESS, &BUTTON4_HOLDRELEASE);
-Button BUTTON5(5, &BUTTON5_PRESS, &BUTTON5_RELEASE, &BUTTON5_HOLDPRESS, &BUTTON5_HOLDRELEASE);
-Button BUTTON6(3, &BUTTON6_PRESS, &BUTTON6_RELEASE, &BUTTON6_HOLDPRESS, &BUTTON6_HOLDRELEASE);
+Button BUTTON1(13,  &BUTTON1_PRESS, &BUTTON1_RELEASE, &BUTTON1_HOLDPRESS, &BUTTON1_HOLDRELEASE);
+Button BUTTON2(4,   &BUTTON2_PRESS, &BUTTON2_RELEASE, &BUTTON2_HOLDPRESS, &BUTTON2_HOLDRELEASE);
+Button BUTTON3(2,   &BUTTON3_PRESS, &BUTTON3_RELEASE, &BUTTON3_HOLDPRESS, &BUTTON3_HOLDRELEASE);
+Button BUTTON4(11,  &BUTTON4_PRESS, &BUTTON4_RELEASE, &BUTTON4_HOLDPRESS, &BUTTON4_HOLDRELEASE);
+Button BUTTON5(12,  &BUTTON5_PRESS, &BUTTON5_RELEASE, &BUTTON5_HOLDPRESS, &BUTTON5_HOLDRELEASE);
+Button BUTTON6(3,   &BUTTON6_PRESS, &BUTTON6_RELEASE, &BUTTON6_HOLDPRESS, &BUTTON6_HOLDRELEASE);
 
 //Common array of buttons
 Button *BUTTONS[] { &BUTTON1, &BUTTON2, &BUTTON3, &BUTTON4, &BUTTON5, &BUTTON6 };
@@ -73,11 +75,15 @@ void loop()
 {
   //Update all buttons
   if (NUMBER_BUTTONS != 0)
+  {
     updateButtons();
+  }
     
   //Update all expressions
   if (NUMBER_EXPS != 0)
+  {
     updateExps();
+  }
   
   //Wait before the next loop
   delay(UPDATE_DELAY);
@@ -123,7 +129,7 @@ void updateExps()
     byte message[3];
     if (EXPRESSIONS[i]->getMessage(message))
     {
-      MIDI.sendControlChange(message[1], message[2], message[0]);
+      //MIDI.sendControlChange(message[1], message[2], message[0]);
     }
   }
 }
@@ -146,13 +152,13 @@ void changeLayer(byte layer)
   for (int i = 0; i < NUMBER_EXPS; i++)
   {
     EXPRESSIONS[i]->setLayer(CURRENT_LAYER);
-  }  
+  }
 
-  //Set the fixed diodes
-  digitalWrite(DIODE_RED1, DIODE_RED1_VALUES[CURRENT_LAYER]);
-  digitalWrite(DIODE_RED2, DIODE_RED2_VALUES[CURRENT_LAYER]);
+  //Set the red diodes
+  analogWrite(DIODE_RED1, DIODE_RED1_VALUES[CURRENT_LAYER] * RED_PWM_DUTY);
+  analogWrite(DIODE_RED2, DIODE_RED2_VALUES[CURRENT_LAYER] * RED_PWM_DUTY);
 
-  //Set the PWM diodes
-  analogWrite(DIODE_GREEN1, DIODE_GREEN1_VALUES[CURRENT_LAYER] * DIODE_PWM_DUTY);
-  analogWrite(DIODE_GREEN2, DIODE_GREEN2_VALUES[CURRENT_LAYER] * DIODE_PWM_DUTY);
+  //Set the green diodes
+  analogWrite(DIODE_GREEN1, DIODE_GREEN1_VALUES[CURRENT_LAYER] * GREEN_PWM_DUTY);
+  analogWrite(DIODE_GREEN2, DIODE_GREEN2_VALUES[CURRENT_LAYER] * GREEN_PWM_DUTY);
 }
