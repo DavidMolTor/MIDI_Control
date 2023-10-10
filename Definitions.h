@@ -143,10 +143,10 @@ ButtonValues BUTTON4_HOLDRELEASE(BUTTON4_HOLDRELEASE_CHN, BUTTON4_HOLDRELEASE_CM
 
 //Button 5 press definitions
 byte BUTTON5_PRESS_CHN[]    {   2,   2,   0,   0 };
-byte BUTTON5_PRESS_CMD[]    { 128,  61,   0,   0 };
+byte BUTTON5_PRESS_CMD[]    { 128,  60,   0,   0 };
 byte BUTTON5_PRESS_MIN[]    { 127,   0, 255, 255 };
-byte BUTTON5_PRESS_MAX[]    { 127, 127,   0,   0 };
-byte BUTTON5_PRESS_STP[]    { 128, 127,   0,   0 };
+byte BUTTON5_PRESS_MAX[]    { 127,   0,   0,   0 };
+byte BUTTON5_PRESS_STP[]    { 128,   0,   0,   0 };
 ButtonValues BUTTON5_PRESS(BUTTON5_PRESS_CHN, BUTTON5_PRESS_CMD, BUTTON5_PRESS_MIN, BUTTON5_PRESS_MAX, BUTTON5_PRESS_STP);
 
 //Button 5 release definitions
@@ -177,10 +177,10 @@ ButtonValues BUTTON5_HOLDRELEASE(BUTTON5_HOLDRELEASE_CHN, BUTTON5_HOLDRELEASE_CM
 
 //Button 6 press definitions
 byte BUTTON6_PRESS_CHN[]    {   1,   2,   0,   0 };
-byte BUTTON6_PRESS_CMD[]    {  69,  60,   0,   0 };
+byte BUTTON6_PRESS_CMD[]    {  69,  61,   0,   0 };
 byte BUTTON6_PRESS_MIN[]    {   9,   0, 255, 255 };
-byte BUTTON6_PRESS_MAX[]    {   0,   0,   0,   0 };
-byte BUTTON6_PRESS_STP[]    {   0,   0,   0,   0 };
+byte BUTTON6_PRESS_MAX[]    {   0, 127,   0,   0 };
+byte BUTTON6_PRESS_STP[]    {   0, 127,   0,   0 };
 ButtonValues BUTTON6_PRESS(BUTTON6_PRESS_CHN, BUTTON6_PRESS_CMD, BUTTON6_PRESS_MIN, BUTTON6_PRESS_MAX, BUTTON6_PRESS_STP);
 
 //Button 6 release definitions
