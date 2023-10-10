@@ -57,7 +57,7 @@ ButtonValues BUTTON2_RELEASE(BUTTON2_RELEASE_CHN, BUTTON2_RELEASE_CMD, BUTTON2_R
 
 //Button 2 hold press definitions
 byte BUTTON2_HOLDPRESS_CHN[]     {   2,   2,   0,   0 };
-byte BUTTON2_HOLDPRESS_CMD[]     { 128,  65,   0,   0 };
+byte BUTTON2_HOLDPRESS_CMD[]     { 128,   4,   0,   0 };
 byte BUTTON2_HOLDPRESS_MIN[]     {   0, 127, 255, 255 };
 byte BUTTON2_HOLDPRESS_MAX[]     { 127, 127,   0,   0 };
 byte BUTTON2_HOLDPRESS_STP[]     {  10, 127,   0,   0 };
@@ -75,7 +75,7 @@ ButtonValues BUTTON2_HOLDRELEASE(BUTTON2_HOLDRELEASE_CHN, BUTTON2_HOLDRELEASE_CM
 
 //Button 3 press definitions
 byte BUTTON3_PRESS_CHN[]    {   1,   2,   0,   0 };
-byte BUTTON3_PRESS_CMD[]    {  69,   4,   0,   0 };
+byte BUTTON3_PRESS_CMD[]    {  69,  65,   0,   0 };
 byte BUTTON3_PRESS_MIN[]    {   8, 127, 255, 255 };
 byte BUTTON3_PRESS_MAX[]    {   0, 127,   0,   0 };
 byte BUTTON3_PRESS_STP[]    {   0, 127,   0,   0 };
