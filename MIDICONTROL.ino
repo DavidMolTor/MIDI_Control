@@ -32,7 +32,7 @@ byte DIODE_GREEN2_VALUES[]  { 0, 1, 0, 0 };
 
 //Expression pedal definition
 byte EXPRESSION1_CHANNELS[] { 1, 1, 1, 1 };
-byte EXPRESSION1_COMMANDS[] { 1, 1, 1, 1 };
+byte EXPRESSION1_COMMANDS[] { 10, 10, 10, 10 };
 Expression EXPRESSION1(A0, EXPRESSION1_CHANNELS, EXPRESSION1_COMMANDS);
 
 //Common array of expression pedals
@@ -129,7 +129,7 @@ void updateExps()
     byte message[3];
     if (EXPRESSIONS[i]->getMessage(message))
     {
-      //MIDI.sendControlChange(message[1], message[2], message[0]);
+      MIDI.sendControlChange(message[1], message[2], message[0]);
     }
   }
 }
